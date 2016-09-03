@@ -1,7 +1,7 @@
 from PyKDL import *
 from math import pi
 from lin_inter import a5a6_limit
-from lin_inter import limit_kuka_to_negative
+from lin_inter import limit_kuka_to_positive
 from lin_inter import fix_limit
 from numpy import array
 
@@ -9,7 +9,7 @@ from numpy import array
 arm_type = 'lwr'
 nJoints = 7
 
-arm_instance = 'right'
+arm_instance= 'left'
 
 # when set to False, the wlds solvers joint weights get modulated
 # according to proximity to joint limits
@@ -34,18 +34,22 @@ ik_weightTS = (1.0,)*6  # how much should the cartesian goal directions be pursu
 ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish the goal?
 
 #max joint speed
-max_vel=41.0*pi/180  # 30.0
-#**************************for inertia this may change
-max_vel=441.0*pi/180
+#max_vel=15.0*pi/180
+max_vel=30.0*pi/180
 
 #initial joint position
-initial_joint_pos=[0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
-#initial_vf_pose=["set", "goal", [-1., 0., 0., 0.8, 0., 0., 1., -0.15, 0., 1., 0., 1., 0., 0., 0., 1., 0.05]]
+#initial_joint_pos=[0.78,1.6,-0.4,1.3,1.0,0.5,0.7]
+#initial joint pos (open left position)
+#initial_joint_pos = [0.380093, 0.383757, -0.475088, -1.868434, -1.302008, 1.671749, 0.112623]
+#initial joint pos (grabbing forward position
+#initial_joint_pos = [0.322857, 1.656332, 0.094038, -1.183425, -1.252687, 1.748051, 2.019311]
+initial_joint_pos = [0.4, 1.15, -1., -1.7, -1., 1.4, 0.]
+
 
 # arm configuration
 arm_segments = [
         Segment(Joint(Joint.None),
-            Frame(Rotation.RPY(0.71178, 0.85723, -0.71169),Vector(0.385121, -0.0570121, 1.15408)  )),
+            Frame(Rotation.RPY(0.71372, -0.84806, -2.42787),Vector(0.395,0.059,1.149))),
         Segment(Joint(Joint.None),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.11))),
         Segment(Joint(Joint.RotZ),
@@ -61,7 +65,7 @@ arm_segments = [
         Segment(Joint(Joint.RotZ, -1),
             Frame(Rotation.RotX(pi/2), Vector(0, -0.078, 0.0))),
         Segment(Joint(Joint.RotZ),
-            Frame(Rotation.RotZ(3*pi/4)*Rotation.RotX(pi/2)*Rotation.RotY(pi), Vector(-0.075, -0.075, -0.094))),
+            Frame(Rotation.RotZ(pi*3/4)*Rotation.RotX(-pi/2)*Rotation.RotY(-pi/2), Vector(0.075, -0.075, -0.094))),
 #        Segment(Joint(Joint.None),
 #            Frame(Rotation.Identity(), Vector(0.07, -0.025, 0.28))),
             ]
@@ -73,15 +77,15 @@ arm_limits_default = [[-169.5*pi/180, 169.5*pi/180],
               [-169.5*pi/180, 169.5*pi/180],
               [-119.5*pi/180, 119.5*pi/180],
               [-169.5*pi/180, 169.5*pi/180]]
-arm_limits_fede = [[-169.5*pi/180, 169.5*pi/180],
-              [-119.5*pi/180, -20.0*pi/180],
-              [-169.5*pi/180, 169.5*pi/180],
-              [-119.5*pi/180, -20.0*pi/180],
-              [-169.5*pi/180, 169.5*pi/180],
+arm_limits_fede = [[-169.9*pi/180, 169.9*pi/180],
+              [-119.9*pi/180, -20.0*pi/180],
+              [-169.9*pi/180, 169.9*pi/180],
+              [-119.9*pi/180, -20.0*pi/180],
+              [-169.9*pi/180, 169.9*pi/180],
               #[   0.5*pi/180, 119.9*pi/180],
               #[   5.0*pi/180, 169.9*pi/180]]
-              [-119.5*pi/180, 119.5*pi/180],
-              [-169.5*pi/180, 169.5*pi/180]]
+              [-119.9*pi/180, 119.9*pi/180],
+              [-169.9*pi/180, 169.9*pi/180]]
 arm_limits=arm_limits_default
 #Extra margins in the limits for limit avoidance. This is necessary for all robots to define
 arm_extralimit_margin=1.0*pi/180
@@ -91,65 +95,61 @@ arm_extralimits=[[x[0]+arm_extralimit_margin,x[1]-arm_extralimit_margin] for x i
 rate=0.01
 
 #special A5 and A6 joint limits
-limitsA6=[  #table for limits on A6 when changing A5. Data: A5_angle, A6minlim, A6maxlim
-[ -130,  -114,    90],
-[ -120,  -130,    95],
-[ -100,  -138,    84],
-[  -80,  -140,    90],
-[  -60,  -140,    96],
-[  -50,  -138,   105],
-[  -40,  -132,   130],
-[  -35,  -132,   144],
-[  -30,  -135,   155],
-[  -25,  -150,   160],
-[  -20,  -165,   170],
-[  -10,  -170,   170],
+limitsA6=[#table for limits on A6 when changing A5. Data: A5_angle, A6minlim, A6maxlim
+[ -130,  -170,     0],
+[ -120,  -170,     0],
+[ -100,  -170,     0],
+[  -80,  -170,     0],
+[  -60,  -170,     0],
+[  -50,  -170,     4],
+[  -40,  -170,    20],
+[  -35,  -170,    47],
+[  -30,  -170,    65],
+[  -25,  -170,    77],
+[  -20,  -170,    90],
+[  -10,  -170,   110],
 [    0,  -170,   170],
 [   10,  -170,   170],
 [   20,  -170,   170],
-[   30,   -70,   170],
-[   40,   -27,   170],
-[   50,   -12,   170],
-[   60,    -5,   170],
-[   70,    -3,   170],
-[   80,    -4,   170],
-[  100,    -3,   170],
-[  120,     0,   170],
-[  130,     0,   170]
+[   30,  -155,   142],
+[   40,  -121,   140],
+[   50,   -97,   140],
+[   60,   -90,   133],
+[   70,   -86,   133],
+[   80,   -81,   138],
+[  100,   -81,   138],
+[  120,   -81,   125],
+[  130,   -87,   112]
 ]
-
-
 limitsA6=[map(float,i) for i in limitsA6]
 limitsA5= [ #table for limits on A5 when changing A6. Data: A6_angle, A5minlim, A5maxlim
-[-170, -10, 20],
-[-160, -21, 21],
-[-135, -28, 22],
-[-131, -117, 23],
-[-113, -130, 25],
-[-70,  -130, 30],
-[-26, -130, 39],
-[-11, -130, 50],
-[-4, -130, 60],
-[-2, -130, 70],
-[0, -130, 130],
-[82, -130, 130],
-[83, -99, 130],
-[95, -60, 130],
-[104, -50, 130],
-[154, -30, 130],
-[160, -24, 130],
-[169, -20, 130],
-[170, -20, 130]
+[-170, -130, 20],
+[-153, -130, 29],
+[-119, -130, 40],
+[-98, -130, 50],
+[-80, -130, 78],
+[-81, -130, 130],
+[-1, -130, 130],
+[0, -55, 130],
+[20, -40, 130], 
+[64, -29, 130],
+[108, -10, 130],
+[110, -8, 130],
+[125, -7, 120],
+[132, -6, 58],
+[142, -4, 30],
+[155, -2, 25],
+[170, 0, 20]
 ]
 limitsA5=[map(float,i) for i in limitsA5]
-#limitsA5=[[i[0],limit_kuka_to_negative(i[1]),limit_kuka_to_negative(i[2])] for i in limitsA5]
-limitsA5=[fix_limit(i) for i in limitsA5]
 
 #Some safety distance to the hand limits
 limitsA5=[[i[0], i[1]+5, i[2]-5] for i in limitsA5]
 limitsA6=[[i[0], i[1]+5, i[2]-5] for i in limitsA6]
 
-#print "Limits Table", limitsA5
+#limitsA5=[[i[0],limitKukaToPositive(i[1]),limitKukaToPositive(i[2])] for i in limitsA5]
+limitsA5=[fix_limit(i) for i in limitsA5]
+print "Limits Table", limitsA5
 
 def updateJntLimits(jnt_pos):
     a5angle=jnt_pos[5]
@@ -161,7 +161,8 @@ def updateJntLimits(jnt_pos):
     return joint_limits
 
 def update_joint_weights(q,qdot):
-    return array([1.0]*nJoints)
+        return array([1.0]*nJoints)
+
 
 #for roboview
 segments=arm_segments
