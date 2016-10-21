@@ -2,30 +2,39 @@ from PyKDL import Joint,Rotation,Vector,Frame,Segment
 from numpy import pi,array
 
 
-finger_kin= [
-    #Base joint
-    Segment(Joint(Joint.RotZ),
-            Frame(Rotation.RotX(pi/2), Vector(0.0, 0.0 , 0.0))),
-    #Proximal
-    Segment(Joint(Joint.RotZ),
-            Frame(Vector(0.0678, 0, 0.0))),
-    #Distal1
-    Segment(Joint(Joint.RotZ),
-            Frame(Vector(0.03, 0, 0))),
-    #Distal2
-    Segment(Joint(Joint.RotZ),
-            Frame(Rotation.RotY(pi/2)*Rotation.RotZ(pi/2), Vector(0.0295, 0.0, 0.0)))
-]
+# finger_kin= [
+#     #Base joint
+#     Segment(Joint(Joint.RotZ),
+#             Frame(Rotation.RotX(pi/2), Vector(0.0, 0.0 , 0.0))),
+#     #Proximal
+#     Segment(Joint(Joint.RotZ),
+#             Frame(Vector(0.0678, 0, 0.0))),
+#     #Distal1
+#     Segment(Joint(Joint.RotZ),
+#             Frame(Vector(0.03, 0, 0))),
+#     #Distal2
+#     Segment(Joint(Joint.RotZ),
+#             Frame(Rotation.RotY(pi/2)*Rotation.RotZ(pi/2), Vector(0.0295, 0.0, 0.0)))
+# ]
 
-pos_sensor_proximal1=2.63869565217391304348*0.01
+#pos_sensor_proximal1=2.63869565217391304348*0.01
 pos_sensor_proximal1=2.45*0.01 
 pos_sensor_proximal2=2.21478260869565217392*0.01
-pos_sensor_distal=.81521739130434782608*0.01
+#pos_sensor_distal=.81521739130434782608*0.01
 pos_sensor_distal=.8*0.01
 dist_proximal_distal1=6.78*0.01
 dist_distal1_distal2=3.0*0.01
 dist_end_tip=1.35*0.01
 dist_distal2_tip=2.95*0.01+dist_end_tip
+
+#Sensor positions*****
+pos_sensor_proximal1 = 55.0/2.0*0.001
+pos_sensor_proximal2 = 55.0/2.0*0.001
+pos_sensor_distal    = 25.0/2.0*0.001
+#Joint positions *****
+dist_proximal_distal = 55.0*0.001
+dist_distal1_distal2 = 25.0*0.001
+dist_distal2_tip     = 25.0*0.001
 
 torque_factors=[1.002,0.9,.49218]
 
@@ -152,3 +161,10 @@ limits_max=[i[1] for i in finger_lim_roboview]
 print "Limits"
 print limits_min
 print limits_max
+
+
+#Table for finger dimensions
+#Proximal L: 55, W:20
+#Middle L:25, W:20
+#Distal L:25, W:19.2
+#Base L:64.1, W:24.66
