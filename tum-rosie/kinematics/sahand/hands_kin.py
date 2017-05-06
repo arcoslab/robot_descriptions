@@ -92,13 +92,13 @@ fingers_coupling = [#thumb
 
 angle1=2.03357
 angle2=1.96569
-angle3=55.0
-
+#angle3=55.0
+angle3=90.0
 hands_kin = {
     'right' : [[#thumb
     Segment(Joint(Joint.None),
             Frame(Vector(-0.003,0.0271,0.0))),
-    Segment(Joint(Joint.RotZ,-1),
+    Segment(Joint(Joint.RotZ),
             Frame(Rotation.RotX(angle3*pi/180.0)*Rotation.RotZ(90.0*pi/180.0),Vector(-0.009,0.114,0.097)))]+finger_kin,
                [#first
     Segment(Joint(Joint.None),

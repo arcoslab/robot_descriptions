@@ -1,5 +1,5 @@
 from PyKDL import Joint,Rotation,Vector,Frame,Segment
-from numpy import pi,array
+from numpy import pi,array, identity
 
 
 finger_kin= [
@@ -89,15 +89,18 @@ sensor_locked_joints=[]
 for finger in motor_locked_joints:
     sensor_locked_joints.append([not(i) for i in finger])
 
-thumb_finger_coupling = array([[1.0, 0.0, 0.0, 0.0],
-                               [0.0, 1.0, 0.0, 0.0],
-                               [0.0, 0.0, 1.0, 0.0],
-                               [0.0, 0.0, 0.0, 1.0],
-                               [0.0, 0.0, 0.0, 1.0]])
+#thumb_finger_coupling = array([[1.0, 0.0, 0.0, 0.0],
+#                               [0.0, 1.0, 0.0, 0.0],
+#                               [0.0, 0.0, 1.0, 0.0],
+#                               [0.0, 0.0, 0.0, 1.0],
+#                               [0.0, 0.0, 0.0, 1.0]])
 
-sensor_finger_coupling = array([[1.0, 0.0, 0.0],
-                                [0.0, 1.0, 0.0],
-                                [0.0, 0.0, 1.0]])
+#sensor_finger_coupling = array([[1.0, 0.0, 0.0],
+#                                [0.0, 1.0, 0.0],
+#                                [0.0, 0.0, 1.0]])
+
+thumb_finger_coupling = identity(6)
+sensor_finger_coupling= identity(3)
 
 fingers_coupling = [#thumb
     thumb_finger_coupling,
@@ -113,12 +116,41 @@ fingers_coupling = [#thumb
 
 angle1=2.03357
 angle2=1.96569
-angle3=55.0
+angle3=85.0
+
+# hands_kin = {
+#     'right' : [[#thumb
+#         Segment(Joint(Joint.None), Frame(Vector(0.0,0.0,0.0))),
+#         Segment(Joint(Joint.RotZ,-1),Frame(Rotation.RotX(angle3*pi/180.0)*Rotation.RotZ(60.0*pi/180.0),Vector(56.89*0.001,40.42*0.001,72.92*0.001)))]+finger_kin,
+#                [#first
+#         Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180.0,-angle1*pi/180.0),Vector(0.0,15.*3*0.001,105.77*0.001)))]+finger_kin,
+#                [#middle
+#         Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180.0,0.0),             Vector(0.0,15.0*0.001,117.89*0.001)))]+finger_kin,
+#                [#ring
+#         Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180.0,angle2*pi/180.0), Vector(0.0,-15*0.001,111.84*0.001)))]+finger_kin,
+#                [#PINKY
+#                    Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180., 0.0), Vector(0.0,-15*3*0.001, 92.59*0.001)))]+finger_kin
+#     ],
+#     'left' : [[#thumb
+#         Segment(Joint(Joint.None),Frame(Vector(0.0,0.0,0.0))),
+#         Segment(Joint(Joint.RotZ),Frame(Rotation.RotX(-angle3*pi/180.0)*Rotation.RotZ(-55.0*pi/180.0),Vector(56.89*0.001,-40.42*0.001,72.92*0.001)))]+finger_kin,
+#                [#first
+#         Segment(Joint(Joint.None),Frame(Rotation.EulerZYZ(0.0, 90.0*pi/180.0, -(pi-(angle2*pi/180.0))),Vector(0.0,-15*3*0.001,105.77*0.001)))]+finger_kin,
+#                [#middle
+#         Segment(Joint(Joint.None),Frame(Rotation.EulerZYZ(pi,-90.0*pi/180.0,0.0),                      Vector(0.0,-15*0.001,117.89*0.001)))]+finger_kin,
+#                [#ring
+#         Segment(Joint(Joint.None),Frame(Rotation.EulerZYZ(0.0, 90.0*pi/180.0,(pi-angle1*pi/180.0)),    Vector(0.0,15*0.001,111.84*0.001)))]+finger_kin,
+#               [#PINKY
+#         Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(0.0, 90.0*pi/180.0, pi),                    Vector(0.0,15*0.001*3,92.59*0.001)))]+finger_kin
+#               ]
+#     }
+
+
 
 hands_kin = {
     'right' : [[#thumb
-        Segment(Joint(Joint.None), Frame(Vector(0.0,0.0,0.0))),
-        Segment(Joint(Joint.RotZ,-1),Frame(Rotation.RotX(angle3*pi/180.0)*Rotation.RotZ(55.0*pi/180.0),Vector(56.89*0.001,40.42*0.001,72.92*0.001)))]+finger_kin,
+        #Segment(Joint(Joint.None), Frame(Vector(0.0,0.0,0.0))), 
+        Segment(Joint(Joint.RotZ),Frame(Rotation.EulerZYZ(pi/6.0, -55*pi/180., 0.0),Vector(56.89*0.001,40.42*0.001,72.92*0.001)))]+finger_kin,
                [#first
         Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180.0,-angle1*pi/180.0),Vector(0.0,15.*3*0.001,105.77*0.001)))]+finger_kin,
                [#middle
@@ -129,7 +161,7 @@ hands_kin = {
                    Segment(Joint(Joint.None), Frame(Rotation.EulerZYZ(pi,-90.0*pi/180., 0.0), Vector(0.0,-15*3*0.001, 92.59*0.001)))]+finger_kin
     ],
     'left' : [[#thumb
-        Segment(Joint(Joint.None),Frame(Vector(0.0,0.0,0.0))),
+        Segment(Joint(Joint.None),Frame(Vector(0.0,0.0,0.0))), #TODO fix left hand. 
         Segment(Joint(Joint.RotZ),Frame(Rotation.RotX(-angle3*pi/180.0)*Rotation.RotZ(-55.0*pi/180.0),Vector(56.89*0.001,-40.42*0.001,72.92*0.001)))]+finger_kin,
                [#first
         Segment(Joint(Joint.None),Frame(Rotation.EulerZYZ(0.0, 90.0*pi/180.0, -(pi-(angle2*pi/180.0))),Vector(0.0,-15*3*0.001,105.77*0.001)))]+finger_kin,
@@ -142,9 +174,12 @@ hands_kin = {
               ]
     }
 
-finger_limits=[[-15.0*pi/180.0,15.0*pi/180.0],
-               [0.0*pi/180.0, 55.0*pi/180.0],
-               [5.0*pi/180.0, 55.0*pi/180.0]]
+
+
+
+finger_limits=[[-20.0*pi/180.0,20.0*pi/180.0],
+               [0.0*pi/180.0, 90.0*pi/180.0],
+               [5.0*pi/180.0, 90.0*pi/180.0]]
 
 fingers_lim = [[[-10.0*pi/180.0,10.0*pi/180.0]]+finger_limits,#<-thumb
                finger_limits , #<-first
@@ -157,7 +192,7 @@ finger=2
 segments=hands_kin['left'][finger]
 #print "Segments"
 print segments
-finger_lim=fingers_lim[finger]
+#finger_lim=fingers_lim[finger]
 finger_lim_roboview=[[-15.0*pi/180.0, 15.0*pi/180.0],
                      [0.0*pi/180.0  , 90.0*pi/180.0],
                      [0*pi/180.0    , 0*pi/180.0],
@@ -166,11 +201,11 @@ finger_lim_roboview=[[-15.0*pi/180.0, 15.0*pi/180.0],
                      [0.0*pi/180.0  , 90.0*pi/180.0],
                      [0*pi/180.0    , 0*pi/180.0]]
 
-limits_min=[i[0] for i in finger_lim_roboview]
-limits_max=[i[1] for i in finger_lim_roboview]
-print "Limits"
-print limits_min
-print limits_max
+#limits_min=[i[0] for i in finger_lim_roboview]
+#limits_max=[i[1] for i in finger_lim_roboview]
+#print "Limits"
+#print limits_min
+#print limits_max
 
 
 #Table for finger dimensions
