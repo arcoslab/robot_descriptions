@@ -7,7 +7,7 @@ from numpy import array
 
 # main configuration
 arm_type = 'lwr'
-nJoints = 10
+nJoints = 12
 
 arm_instance = 'right'
 
@@ -37,18 +37,22 @@ ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish 
 max_vel=30.0*pi/180
 
 #initial joint position
-initial_joint_pos=[0.0, 0.0, 0.0, 0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
+initial_joint_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
 #initial_vf_pose=["set", "goal", [-1., 0., 0., 0.8, 0., 0., 1., -0.15, 0., 1., 0., 1., 0., 0., 0., 1., 0.05]]
 
 # arm configuration
 arm_segments = [
         Segment(Joint(Joint.None),
             Frame(Rotation.RPY(0.0, 1.57, 0.0), Vector(0.4, 0.0, 1.15)  )),
+        Segment(Joint(Joint.TransZ),
+            Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.TransY),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.RotY),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.RotX),
+            Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
+        Segment(Joint(Joint.RotZ),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.None),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.11))),
@@ -70,9 +74,11 @@ arm_segments = [
 #            Frame(Rotation.Identity(), Vector(0.07, -0.025, 0.28))),
             ]
 
-arm_limits_default = [[- 360.0*pi/180.0, 360.0*pi/180.0],
-                      [- 360.0*pi/180.0, 360.0*pi/180.0],
-                      [- 360.0*pi/180.0, 360.0*pi/180.0],
+arm_limits_default = [[-0.5, 0.5],
+                      [-0.4, 0.4],
+                      [- 180.0*pi/180.0, 180.0*pi/180.0],
+                      [- 180.0*pi/180.0, 180.0*pi/180.0],
+                      [- 180.0*pi/180.0, 180.0*pi/180.0],
                       [-169.5*pi/180, 169.5*pi/180],
                       [-119.5*pi/180, 119.5*pi/180],
                       [-169.5*pi/180, 169.5*pi/180],
@@ -159,8 +165,8 @@ limitsA6=[[i[0], i[1]+5, i[2]-5] for i in limitsA6]
 #print "Limits Table", limitsA5
 
 def updateJntLimits(jnt_pos):
-    a5angle=jnt_pos[8]
-    a6angle=jnt_pos[9]
+    a5angle=jnt_pos[10]
+    a6angle=jnt_pos[11]
     a5limits,a6limits=a5a6_limit(a5angle*360/(2*pi),a6angle*360/(2*pi),limitsA5,limitsA6)
     joint_limits=arm_extralimits
     joint_limits[-2]=map(lambda x: x*2*pi/360, a5limits)
