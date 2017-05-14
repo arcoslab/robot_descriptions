@@ -40,12 +40,16 @@ max_vel=30.0*pi/180
 initial_joint_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
 #initial_vf_pose=["set", "goal", [-1., 0., 0., 0.8, 0., 0., 1., -0.15, 0., 1., 0., 1., 0., 0., 0., 1., 0.05]]
 
+#
+
 # arm configuration
 arm_segments = [
         Segment(Joint(Joint.None),
-            Frame(Rotation.RPY(0.0, 1.57, 0.0), Vector(0.4, 0.0, 1.15)  )),
+            Frame(Rotation.Identity(), Vector(0.4, 0.0, 1.15)  )),
         Segment(Joint(Joint.TransZ),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
+        Segment(Joint(Joint.None),
+            Frame(Rotation.RPY(0.0, 1.57, 0.0), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.TransY),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.RotY),
