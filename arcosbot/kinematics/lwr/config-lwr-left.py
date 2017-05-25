@@ -93,6 +93,9 @@ arm_extralimits=[[x[0]+arm_extralimit_margin,x[1]-arm_extralimit_margin] for x i
 
 #control loop speed in seconds
 rate=0.01
+fast_mode=False
+virtual_rate=0.01
+fast_rate=0.005
 
 #special A5 and A6 joint limits
 limitsA6=[#table for limits on A6 when changing A5. Data: A5_angle, A6minlim, A6maxlim
