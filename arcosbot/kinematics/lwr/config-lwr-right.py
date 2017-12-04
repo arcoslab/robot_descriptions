@@ -35,12 +35,14 @@ ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish 
 
 #max joint speed
 max_vel=41.0*pi/180  # 30.0
+max_vel=21.0*pi/180  # 30.0
 #**************************for inertia this may change
-max_vel=441.0*pi/180
+#max_vel=441.0*pi/180
 
 #initial joint position
 initial_joint_pos=[0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
 initial_joint_pos=[0.0,0.0,0.0,0.0,0.0,pi/3,pi/2]
+initial_joint_pos=[0.6, 0.91, 0.4, 1.6, 1.0, -0.95, 0.3] # for robot arm in wood mounting 
 
 
 # arm configuration
