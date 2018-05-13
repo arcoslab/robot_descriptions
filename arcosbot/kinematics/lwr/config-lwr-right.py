@@ -19,9 +19,9 @@ disable_smart_joint_limit_avoidance = False
 robotarm_portbasename= "/"+arm_type+"/"+arm_instance
 
 # bridge communication
-qin_portname = "/bridge/qin"
-qcmded_portname = "/bridge/qcmded"
-qcmd_portname = "/bridge/qcmd"
+qin_portname = "/qin"
+qcmded_portname = "/qcmded"
+qcmd_portname = "/qcmd"
 
 #inverse kinematics parameters
 
