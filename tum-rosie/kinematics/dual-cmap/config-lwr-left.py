@@ -19,9 +19,9 @@ disable_smart_joint_limit_avoidance = False
 robotarm_portbasename= "/"+arm_type+"/"+arm_instance
 
 # bridge communication
-qin_portname = "/bridge/qin"
-qcmded_portname = "/bridge/qcmded"
-qcmd_portname = "/bridge/qcmd"
+qin_portname = "/qin"
+qcmded_portname = "/qcmded"
+qcmd_portname = "/qcmd"
 
 #inverse kinematics parameters
 
@@ -44,7 +44,7 @@ max_vel=30.0*pi/180
 #initial joint pos (grabbing forward position
 #initial_joint_pos = [0.322857, 1.656332, 0.094038, -1.183425, -1.252687, 1.748051, 2.019311]
 initial_joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 1.15, -1., -1.7, -1., 1.4, 0.]
-
+initial_joint_pos = [0.0, 0.1, 0.8, 0.8, 0.0, 0.0, -0.4, 0.0, 0.4, 0.0, -1.7, 0.0]
 
 # arm configuration
 arm_segments = [
@@ -54,9 +54,9 @@ arm_segments = [
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.None),
             Frame(Rotation.RPY(0.0, 1.57, 0.0),Vector(0.0, 0.0, 0.0))),
-        Segment(Joint(Joint.TransY, -1),
+        Segment(Joint(Joint.TransY),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
-        Segment(Joint(Joint.RotY),
+        Segment(Joint(Joint.RotY, -1),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
         Segment(Joint(Joint.RotX, -1),
             Frame(Rotation.Identity(), Vector(0.0, 0.0, 0.0))),
@@ -77,7 +77,7 @@ arm_segments = [
         Segment(Joint(Joint.RotZ, -1),
             Frame(Rotation.RotX(pi/2), Vector(0, -0.078, 0.0))),
         Segment(Joint(Joint.RotZ),
-            Frame(Rotation.RotZ(pi*3/4)*Rotation.RotX(-pi/2)*Rotation.RotY(-pi/2), Vector(0.075, -0.075, -0.094))),
+            Frame(Rotation.RotZ(-6*pi/4)*Rotation.RotX(pi/2)*Rotation.RotY(-pi), Vector(-0.106, 0.0, -0.094))),
 #        Segment(Joint(Joint.None),
 #            Frame(Rotation.Identity(), Vector(0.07, -0.025, 0.28))),
             ]
@@ -116,50 +116,26 @@ fast_rate=0.005
 
 #special A5 and A6 joint limits
 limitsA6=[#table for limits on A6 when changing A5. Data: A5_angle, A6minlim, A6maxlim
-[ -130,  -170,     0],
-[ -120,  -170,     0],
-[ -100,  -170,     0],
-[  -80,  -170,     0],
-[  -60,  -170,     0],
-[  -50,  -170,     4],
-[  -40,  -170,    20],
-[  -35,  -170,    47],
-[  -30,  -170,    65],
-[  -25,  -170,    77],
-[  -20,  -170,    90],
-[  -10,  -170,   110],
+[ -130,  -140,   140],
+[  -90,  -140,   140],
+[  -45,  -140,   140],
+[  -20,  -140,   140],
+[  -10,  -170,   170],
 [    0,  -170,   170],
 [   10,  -170,   170],
 [   20,  -170,   170],
-[   30,  -155,   142],
-[   40,  -121,   140],
-[   50,   -97,   140],
-[   60,   -90,   133],
-[   70,   -86,   133],
-[   80,   -81,   138],
-[  100,   -81,   138],
-[  120,   -81,   125],
-[  130,   -87,   112]
+[   30,    70,   170],
+[   45,    90,   170],
+[   90,    90,   170],
+[  130,   120,   170]
 ]
 limitsA6=[map(float,i) for i in limitsA6]
 limitsA5= [ #table for limits on A5 when changing A6. Data: A6_angle, A5minlim, A5maxlim
-[-170, -130, 20],
-[-153, -130, 29],
-[-119, -130, 40],
-[-98, -130, 50],
-[-80, -130, 78],
-[-81, -130, 130],
-[-1, -130, 130],
-[0, -55, 130],
-[20, -40, 130], 
-[64, -29, 130],
-[108, -10, 130],
-[110, -8, 130],
-[125, -7, 120],
-[132, -6, 58],
-[142, -4, 30],
-[155, -2, 25],
-[170, 0, 20]
+    [-170, -45,  130],
+    [ -90, -130, 130],
+    [ 0.0,  -90,  10],
+    [  90, -130, 130],
+    [ 170,  -10,  90]
 ]
 limitsA5=[map(float,i) for i in limitsA5]
 
