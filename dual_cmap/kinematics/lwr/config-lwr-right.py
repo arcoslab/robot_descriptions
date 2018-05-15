@@ -8,6 +8,8 @@ from numpy import array
 # main configuration
 arm_type = 'lwr'
 nJoints = 12
+torso_joints= []
+torso_instance = "left"
 
 arm_instance = 'right'
 
@@ -19,6 +21,7 @@ disable_smart_joint_limit_avoidance = False
 robotarm_portbasename= "/"+arm_type+"/"+arm_instance
 
 # bridge communication
+torso_qin_portname = "/torso_qin"
 qin_portname = "/qin"
 qcmded_portname = "/qcmded"
 qcmd_portname = "/qcmd"
@@ -34,14 +37,20 @@ ik_weightTS = (1.0,)*6  # how much should the cartesian goal directions be pursu
 ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish the goal?
 
 #max joint speed
-max_vel=30.0*pi/180
+#max_vel=15.0*pi/180
+max_vel=800.0*pi/180
+speedScale=0.2
+speedScale=1.0
+speedScale=2.0
 
 #initial joint position
 initial_joint_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
 #initial_vf_pose=["set", "goal", [-1., 0., 0., 0.8, 0., 0., 1., -0.15, 0., 1., 0., 1., 0., 0., 0., 1., 0.05]]
 initial_joint_pos=[0.0, 0.1, 0.8, 0.8, 0.0, 0.0, -0.4, 0.0, 0.4, 0.0, -1.7, 0.0]
 
-#
+# joint_p_controller
+jpctrl_kp=1.5
+jpctrl_kp=4.5
 
 # arm configuration
 arm_segments = [
@@ -80,9 +89,9 @@ arm_segments = [
             ]
 
 arm_limits_default = [[-0.5, 0.5],
-                      [-0.4, 0.4],
-                      [- 180.0*pi/180.0, 180.0*pi/180.0],
-                      [- 180.0*pi/180.0, 180.0*pi/180.0],
+                      [0.1, 0.4],
+                      [0.0*pi/180.0, 85*pi/180.0],
+                      [0.0*pi/180.0, 90.0*pi/180.0],
                       [- 180.0*pi/180.0, 180.0*pi/180.0],
                       [-169.5*pi/180, 169.5*pi/180],
                       [-119.5*pi/180, 119.5*pi/180],

@@ -8,6 +8,8 @@ from numpy import array
 # main configuration
 arm_type = 'lwr'
 nJoints = 12
+torso_joints = [0]
+torso_instance = "right"
 
 arm_instance= 'left'
 
@@ -19,6 +21,7 @@ disable_smart_joint_limit_avoidance = False
 robotarm_portbasename= "/"+arm_type+"/"+arm_instance
 
 # bridge communication
+torso_qin_portname = "/torso_qin"
 qin_portname = "/qin"
 qcmded_portname = "/qcmded"
 qcmd_portname = "/qcmd"
@@ -35,7 +38,10 @@ ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish 
 
 #max joint speed
 #max_vel=15.0*pi/180
-max_vel=30.0*pi/180
+max_vel=800.0*pi/180
+speedScale=0.2
+speedScale=1.0
+speedScale=2.0
 
 #initial joint position
 #initial_joint_pos=[0.78,1.6,-0.4,1.3,1.0,0.5,0.7]
@@ -45,6 +51,10 @@ max_vel=30.0*pi/180
 #initial_joint_pos = [0.322857, 1.656332, 0.094038, -1.183425, -1.252687, 1.748051, 2.019311]
 initial_joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 1.15, -1., -1.7, -1., 1.4, 0.]
 initial_joint_pos = [0.0, 0.1, 0.8, 0.8, 0.0, 0.0, -0.4, 0.0, 0.4, 0.0, -1.7, 0.0]
+
+# joint_p_controller
+jpctrl_kp=1.5
+jpctrl_kp=4.5
 
 # arm configuration
 arm_segments = [
@@ -83,8 +93,8 @@ arm_segments = [
             ]
 
 arm_limits_default = [[-0.5, 0.5],
-                      [-0.4, 0.4],
-                      [- 180.0*pi/180.0, 180.0*pi/180.0],
+                      [0.1, 0.4],
+                      [0.0*pi/180.0, 180.0*pi/180.0],
                       [- 180.0*pi/180.0, 180.0*pi/180.0],
                       [- 180.0*pi/180.0, 180.0*pi/180.0],
                       [-169.5*pi/180, 169.5*pi/180],
@@ -133,7 +143,7 @@ limitsA6=[map(float,i) for i in limitsA6]
 limitsA5= [ #table for limits on A5 when changing A6. Data: A6_angle, A5minlim, A5maxlim
     [-170, -45,  130],
     [ -90, -130, 130],
-    [ 0.0,  -90,  10],
+    [ 0.0, -130,  10],
     [  90, -130, 130],
     [ 170,  -10,  90]
 ]
