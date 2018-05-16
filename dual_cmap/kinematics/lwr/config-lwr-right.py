@@ -40,7 +40,8 @@ ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish 
 #max_vel=15.0*pi/180
 max_vel=800.0*pi/180
 speedScale=0.2
-speedScale=1.0
+speedScale=0.6
+#speedScale=1.0
 speedScale=2.0
 
 #initial joint position
@@ -130,10 +131,10 @@ limitsA6=[  #table for limits on A6 when changing A5. Data: A5_angle, A6minlim, 
 [    0,  -170,   170],
 [   10,  -170,   170],
 [   20,  -170,   170],
-[   30,  -170,   -70],
-[   45,  -170,   -90],
-[   90,  -170,   -90],
-[  130,  -170,  -120]
+[   30,  -170,   170],
+[   45,  -170,   170],
+[   90,  -170,   170],
+[  130,  -170,  -170]
 ]
 
 
@@ -142,8 +143,8 @@ limitsA5= [ #table for limits on A5 when changing A6. Data: A6_angle, A5minlim, 
     [-170, -130, 130],
     [ -90, -130, 130],
     [ 0.0, -130, 130],
-    [  90, -130, -45],
-    [ 170, -130, -45]
+    [  90, -130, 130],
+    [ 170, -130, 130]
 ]
 limitsA5=[map(float,i) for i in limitsA5]
 #limitsA5=[[i[0],limit_kuka_to_negative(i[1]),limit_kuka_to_negative(i[2])] for i in limitsA5]
