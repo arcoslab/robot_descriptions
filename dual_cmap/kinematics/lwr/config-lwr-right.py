@@ -38,12 +38,13 @@ ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish 
 
 #max joint speed
 #max_vel=15.0*pi/180
-max_vel=800.0*pi/180
+max_vel=2800.0*pi/180
+max_vel_joint_sim=1360.0*pi/180.0
 speedScale=0.2
 #speedScale=0.6
 #speedScale=1.0
 #speedScale=2.0
-speedScale=3.0
+speedScale=4.0
 
 #initial joint position
 initial_joint_pos=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0,-1.2,0.7,1.4,0.35,-1.4,0.0]
@@ -54,6 +55,12 @@ initial_joint_pos=[0.0, 0.1, 0.8, 0.8, 0.0, 0.0, -0.4, 0.0, 0.4, 0.0, -1.7, 0.0]
 jpctrl_kp=1.5
 jpctrl_kp=4.5
 jpctrl_kp=6.5
+jpctrl_kp=0.8
+jpctrl_kvp=0.8
+jpctrl_kp=1.8
+jpctrl_kvp=1.8
+jpctrl_inertia=0.01
+jpctrl_inertia=0.005
 
 # arm configuration
 arm_segments = [
