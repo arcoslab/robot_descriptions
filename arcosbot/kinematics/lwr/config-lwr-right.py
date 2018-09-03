@@ -33,6 +33,8 @@ ik_lambda = 0.10 # how much should singularities be avoided?
 ik_weightTS = (1.0,)*6  # how much should the cartesian goal directions be pursued?
 ik_weightJS = (1.0,)*nJoints # how much should each joint be used to accomplish the goal?
 
+speedScale=0.20
+
 #max joint speed
 max_vel=41.0*pi/180  # 30.0
 #**************************for inertia this may change
